@@ -1,5 +1,4 @@
-var romanSingles = ["I","V","X"];
-var decSingles = [1,5,10];
+var romanSingles = [["I","IV","V","IX"],["X","XL","L","XC"],["C","CD","D","CM"],["M"]];
 
 function hasNumbers(numberTest) {
   return (/\d/.test(numberTest));
@@ -13,30 +12,41 @@ function isTranslatable(numberLength){
 }
 }
 
-function theConvertor(numberInput){
-  var decimalArray = numberInput.split("");
-  var numeralArray = [];
-  console.log(decimalArray);
+function looperBig(numberInput) {
+  var numberArray = numberInput.split("");
+  var numberArrayReverse = numberArray.reverse();
+  var theFinalCountDown = [];
+  for (index = 0; index < numberInput.length; index++) {
+    theFinalCountDown.push(theConvertor(romanSingles[index], numberArrayReverse[index]));
+  }
+  theFinalCountDown = theFinalCountDown.reverse();
+  theFinalCountDown = theFinalCountDown.join("");
+  return theFinalCountDown;
+};
 
-  if (decimalArray < 4) {
-    for (counter =0; counter <= decimalArray -1; counter++){
-    numeralArray.push("I");
-    }
-  } else if (decimalArray === 4) {
-    numeralArray.push("IV");
-  } else if ((decimalArray >= 5) && (decimalArray < 9)) {
-      numeralArray.push("V"); {
-        if (decimalArray > 5) {
-          for (counter = 0; counter <= decimalArray-6; counter++){
-          numeralArray.push("I");
-        }
+function theConvertor(romanSingles, decimalArray) {
+  var numeralArray = [];
+  var finalNumeral=[];
+
+    if (decimalArray < 4) {     //Begin If statements
+      for (counter =0; counter <= decimalArray -1; counter++){
+      numeralArray.push(romanSingles[0]);
+      }
+    } else if (decimalArray == 4) {
+      numeralArray.push(romanSingles[1]);
+    } else if ((decimalArray >= 5) && (decimalArray < 9)) {
+        numeralArray.push(romanSingles[2]); {
+          if (decimalArray > 5) {
+            for (counter = 0; counter <= decimalArray-6; counter++){
+            numeralArray.push(romanSingles[0]);
+            }
+          }
         }
       }
-    }
-    else if (decimalArray === 9) {
-      numeralArray.push("IX");
-    }
-  console.log(numeralArray);
+      else if (decimalArray == 9) {
+        numeralArray.push(romanSingles[3]);
+      }
+    return (numeralArray.join(""));
 }
 
 
@@ -53,9 +63,9 @@ $(document).ready(function(){
     } else if (rightLength === false){
       alert("Enter number between 1 and 3999 only");
     } else {
-      var finalResult = theConvertor(numberInput);
+      var finalResult = looperBig(numberInput);
 
-      $("#result").text(numberInput);
+      $("#result").text(finalResult);
       $("#output").show();
     }
 
